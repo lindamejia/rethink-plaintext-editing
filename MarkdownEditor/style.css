@@ -1,4 +1,6 @@
 .editor {
   width: 640px;
   background-color: var(--color-white);
+  margin: 20px;
+  padding:20px;
 }

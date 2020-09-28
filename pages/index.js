@@ -3,7 +3,6 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import path from 'path';
 import classNames from 'classnames';
-
 import { listFiles } from '../files';
 
 // Used below, these need to be registered
@@ -16,6 +15,7 @@ import IconJavaScriptSVG from '../public/icon-javascript.svg';
 import IconJSONSVG from '../public/icon-json.svg';
 
 import css from './style.module.css';
+import CodeEditor from '../CodePreview';
 
 const TYPE_TO_ICON = {
   'text/plain': IconPlaintextSVG,
@@ -99,8 +99,10 @@ Previewer.propTypes = {
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
+  'text/plain': PlaintextEditor,
+  'text/markdown': MarkdownEditor,
+  'text/javascript': CodeEditor,
+  'application/json': CodeEditor
 };
 
 function PlaintextFilesChallenge() {
@@ -112,10 +114,18 @@ function PlaintextFilesChallenge() {
     setFiles(files);
   }, []);
 
-  const write = file => {
+  const write = (file, value) => {
+    console.log(files);
     console.log('Writing soon... ', file.name);
-
     // TODO: Write the file to the `files` array
+    for (var i in files) {
+      if (files[i].name == file.name) {
+        files[i]['newText'] = value;
+        console.log(files);
+        break;
+      }
+    }
+    // window.localStorage.setItem(file.name, value);
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
@@ -134,6 +144,8 @@ function PlaintextFilesChallenge() {
             than rendering and editing plaintext? Not much, as it turns out.
           </div>
         </header>
+
+        
 
         <FilesTable
           files={files}
@@ -157,7 +169,12 @@ function PlaintextFilesChallenge() {
       <main className={css.editorWindow}>
         {activeFile && (
           <>
-            {Editor && <Editor file={activeFile} write={write} />}
+            {Editor && (
+              <>
+                {/* <Previewer file={activeFile} /> */}
+                <Editor file={activeFile} write={write} />
+              </>
+            )}
             {!Editor && <Previewer file={activeFile} />}
           </>
         )}
