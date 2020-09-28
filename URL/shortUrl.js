@@ -1,8 +1,9 @@
-//3. Given any URL, shorten it and return a globally unique URL back to the user. Make sure to call out any assumptions and / or limitations in your solution.
+// //3. Given any URL, shorten it and return a globally unique URL back to the user. Make sure to call out any assumptions and / or limitations in your solution.
+
+//Assumptions: jsonstore.io is being used as my databse, I am generating a unique hash, and then storing a new record into this databse with that url, and that hash. 
 
 var endpoint =
   'https://www.jsonstore.io/8ba4fd855086288421f770482e372ccb5a05d906269a34da5884f39eed0418a1';
-//Assume that going to https://shortner.com/#abcd will be redirected to https://google.com
 
 function getrandom() {
   var random_string =
@@ -42,7 +43,7 @@ function shorturl() {
   send_request(longurl);
 }
 
-//we call the send_request() with an argument longurl. In this function we send a JSON request to jsonstore to store the long URL with a link to short URL. So now let’s create the send_request() function.
+//we call the send_request() with an argument longurl. In this function a JSON request is being sent to jsonstore to store the long URL with a link to short URL.
 
 function send_request(url) {
   this.url = url;
