@@ -8,6 +8,7 @@ import { listFiles } from '../files';
 // Used below, these need to be registered
 import MarkdownEditor from '../MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
+import CodeEditor from '../CodePreview';
 
 import IconPlaintextSVG from '../public/icon-plaintext.svg';
 import IconMarkdownSVG from '../public/icon-markdown.svg';
@@ -15,7 +16,8 @@ import IconJavaScriptSVG from '../public/icon-javascript.svg';
 import IconJSONSVG from '../public/icon-json.svg';
 
 import css from './style.module.css';
-import CodeEditor from '../CodePreview';
+
+import { Form } from 'react-bootstrap';
 
 const TYPE_TO_ICON = {
   'text/plain': IconPlaintextSVG,
@@ -125,10 +127,26 @@ function PlaintextFilesChallenge() {
         break;
       }
     }
-    // window.localStorage.setItem(file.name, value);
+    window.localStorage.setItem(file.name, value);
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
+
+  //2. You have over a million rows of data. You need to display this data on a web page along with a search field. Update search results with each character entered by the user. Make sure to call out any assumptions and / or limitations in your solution.
+  //Limitations:
+  //Ideally you would do this by sending a backend request passing query params.
+  //You would want to add pagination when displaying.
+  //For this specific function, I am not validating how the user is entering the information, such as, whether its lowercase or not.
+  //IE does not support .includes()
+  //.filter() is also iterating over each element of the array which could take a very long time if there a million rows of data and it returns another array which takes up storage
+  //.includes() happens to work for this specific exmaple but in other scenerios .some() should be used based on types
+  function handleSearch(value) {
+    console.log(files);
+    const filtered = files.filter(file => {
+      return file.name.includes(value);
+    });
+    console.log(filtered);
+  }  
 
   return (
     <div className={css.page}>
@@ -145,7 +163,11 @@ function PlaintextFilesChallenge() {
           </div>
         </header>
 
-        
+        <input
+          type="text"
+          placeholder="Search by Keyword- Search Results in Console"
+          onChange={event => handleSearch(event.target.value)}
+        />
 
         <FilesTable
           files={files}

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
-import ReactHtmlParser from 'react-html-parser';
-import marked from 'marked';
 
 const MarkdownPreview = dynamic(() => import('react-markdown'), {
   ssr: false
@@ -35,11 +33,6 @@ function MarkdownEditor({ file, write }) {
     const data = editor.getData();
     setValue(data);
   };
-
-  function getMarkdownText() {
-    var rawMarkup = marked(value.replace(/<[^>]+>/g, ''));
-    return { __html: rawMarkup };
-  }
 
   return editorLoaded ? (
     <div className={css.editor}>
